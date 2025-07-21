@@ -1,0 +1,28 @@
+Regole linguaggio M
+Funzioni approvate per Unpivot
+- Table.Unpivot: da usare quando è necessario unpivotizzare colonne specifiche.
+- Table.UnpivotOtherColumns: da usare quando è necessario unpivotizzare tutte le colonne tranne un set definito.
+Funzioni da non utilizzare
+- Table.UnpivotColumns: funzione non esistente in Power Query. NON deve essere usata.
+Strategia operativa raccomandata
+1. Se l’obiettivo è trasformare solo alcune colonne in righe, usa Table.Unpivot.
+2. Se l’obiettivo è mantenere alcune colonne fisse e trasformare tutte le altre in righe, usa Table.UnpivotOtherColumns.
+3. Evitare ogni riferimento alla funzione inesistente Table.UnpivotColumns, anche nei commenti.
+Esempio con Table.Unpivot:
+
+let
+    Fonte = #table(
+        {"Anno", "Mese", "Attuale", "Previsto"},
+        {
+            {2024, "Gennaio", 100, 80},
+            {2024, "Febbraio", 120, 95}
+        }
+    ),
+    Unpivot = Table.Unpivot(
+        Fonte,
+        {"Attuale", "Previsto"},
+        "Attributo",
+        "Valore"
+    )
+in
+    Unpivot
